@@ -1,1 +1,1 @@
-Se crea main.qml
+Se vuelve un paso atras
