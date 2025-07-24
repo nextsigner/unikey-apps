@@ -1,1 +1,1 @@
-Se crea main.qml
+Se crea archivo de version
