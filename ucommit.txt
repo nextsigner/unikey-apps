@@ -1,1 +1,1 @@
-Se elimina modules
+Se agrega ZipManager 4.0
