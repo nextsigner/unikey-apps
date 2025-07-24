@@ -99,29 +99,30 @@ ApplicationWindow{
                 }
             }
         }
-        ZipManager{
-            id: zipManager
-            width: parent.width
-            parent: apps.dev?colZM:colSplash
-            visible: parent!==xApp
-            dev: false
-            onResponseRepExist:{
-                if(res.indexOf('404')>=0){
-                    tiGitRep.color='red'
-                    log.lv('El repositorio ['+url+'] no existe.')
-                }else{
-                    tiGitRep.color=apps.fontColor
-                    log.lv('El repositorio ['+url+'] está disponible en internet.')
-                    log.lv('Para probarlo presiona ENTER')
-                    log.lv('Para instalarlo presiona Ctrl+ENTER')
-                }
             }
-            onResponseRepVersion:{
-                procRRV(res, url, tipo)
+    ZipManager{
+        id: zipManager
+        width: parent.width
+        parent: apps.dev?colZM:colSplash
+        visible: parent!==xApp
+        dev: false
+        onResponseRepExist:{
+            if(res.indexOf('404')>=0){
+                tiGitRep.color='red'
+                log.lv('El repositorio ['+url+'] no existe.')
+            }else{
+                tiGitRep.color=apps.fontColor
+                log.lv('El repositorio ['+url+'] está disponible en internet.')
+                log.lv('Para probarlo presiona ENTER')
+                log.lv('Para instalarlo presiona Ctrl+ENTER')
             }
         }
-
+        onResponseRepVersion:{
+            procRRV(res, url, tipo)
+        }
     }
+
+
     Component.onCompleted: {
         lm.append(lm.add('Zool', 'Aplicación de Astrología desarrollada por Ricardo Martín Pizarro', 'https://github.com/nextsigner/zoolv4'))
     }
