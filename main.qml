@@ -1,8 +1,8 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Window 2.0
-
-import ZipManager 4.0
+import Qt.labs.settings 1.1
+import UniKeyZipDownloader 1.0
 
 ApplicationWindow{
     id: app
@@ -11,6 +11,20 @@ ApplicationWindow{
     color: 'black'
     title: 'Unikey Apps'
     property int fs: Screen.width*0.02
+    Settings{
+        id: apps
+        fileName: unik.getPath(4)+'/'+(''+presetAppName).toLowerCase()+'_app.cfg'
+        property bool dev: false
+        property bool dep: true
+        property string mainFolder: ''
+        property bool runFromGit: false
+        property string uGitRep: 'https://github.com/nextsigner/unikey-apps'
+        property string uFolder: unik?unik.getPath(3):''
+        property bool enableCheckBoxShowGitRep: false
+        property color fontColor: 'white'
+        property color backgroundColor: 'black'
+        property string uCtxUpdate: ''
+    }
     Item{
         id: xApp
         anchors.fill: parent
@@ -79,18 +93,37 @@ ApplicationWindow{
 
                     }
                     T{
+                        id: txtDes
                         text: '<b>Descripción: </b> '+d
-                        width: xItem.width-txt1.contentWidth-botInstalar.width-app.fs*2
+                        width: xItem.width-txt1.contentWidth-rowBtns.width-app.fs*2
                         font.pixelSize: app.fs*0.5
                         wrapMode: Text.WordWrap
                         anchors.verticalCenter: parent.verticalCenter
 
                     }
-                    Button{
-                        id: botInstalar
-                        text: 'Instalar'
-                        anchors.verticalCenter: parent.verticalCenter
-                        onClicked: run(u, colZM)
+                    Row{
+                        id: rowBtns
+                        spacing: app.fs*0.25
+                        Button{
+                            id: botLaunch
+                            text: 'Lanzar'
+                            anchors.verticalCenter: parent.verticalCenter
+                            property string folder: ''
+                            visible: folder!==''
+                            onClicked: {
+                                let mainPath='"'+folder.replace(/\"/g, '')+'"'
+                                let args=[]
+                                args.push('-folder='+""+mainPath.replace(/\"/g, ''))
+                                unik.restart(args, ""+mainPath.replace(/\"/g, ''))
+                                app.close()
+                            }
+                        }
+                        Button{
+                            id: botInstalar
+                            text: 'Instalar'
+                            anchors.verticalCenter: parent.verticalCenter
+                            onClicked: run(u, t)
+                        }
                     }
                 }
                 Column{
@@ -98,28 +131,21 @@ ApplicationWindow{
                     width: parent.width
                 }
             }
-        }
+            Component.onCompleted: {
+                let m0=u.split('/')
+                let projectName=m0[m0.length-1]
+                let folderApp=unik.getPath(4)+'/'+projectName+'/'+projectName+'-main'
+                if(unik.folderExist(folderApp)){
+                    botInstalar.text='Reinstalar'
+                    botLaunch.folder=folderApp
+                }
             }
-    ZipManager{
-        id: zipManager
+        }
+    }
+    UniKeyZipDownloader{
+        id: uzd
         width: parent.width
-        parent: apps.dev?colZM:colSplash
-        visible: parent!==xApp
-        dev: false
-        onResponseRepExist:{
-            if(res.indexOf('404')>=0){
-                tiGitRep.color='red'
-                log.lv('El repositorio ['+url+'] no existe.')
-            }else{
-                tiGitRep.color=apps.fontColor
-                log.lv('El repositorio ['+url+'] está disponible en internet.')
-                log.lv('Para probarlo presiona ENTER')
-                log.lv('Para instalarlo presiona Ctrl+ENTER')
-            }
-        }
-        onResponseRepVersion:{
-            procRRV(res, url, tipo)
-        }
+        visible: true
     }
 
 
@@ -130,14 +156,8 @@ ApplicationWindow{
         sequence: 'Esc'
         onActivated: Qt.quit()
     }
-    function run(url, parent){
-        zipManager.parent=parent
-        zipManager.mkUqpRepVersion(url, 'install')
-
-//        let aname=(''+presetAppName).toLowerCase()
-//        let cfgPath='"'+unik.getPath(4)+'/'+aname+'.cfg"'
-//        let j={}
-//        j.args={}
-//        j.args['git']=url
+    function run(url, appName){
+        uzd.title='<h3>'+appName+'</h3>'
+        uzd.zm.download(url)
     }
-    }
+}
