@@ -154,7 +154,17 @@ ApplicationWindow{
     }
     Shortcut{
         sequence: 'Esc'
-        onActivated: Qt.quit()
+        onActivated: {
+            if(uzd.zm.cPorc>=0.01){
+               uzd.zm.cancelar()
+                return
+            }
+            if(uzd.visible){
+               uzd.visible=false
+                return
+            }
+            Qt.quit()
+        }
     }
     function run(url, appName){
         uzd.title='<h3>'+appName+'</h3>'
