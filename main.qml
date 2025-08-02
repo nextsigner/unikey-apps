@@ -167,6 +167,8 @@ ApplicationWindow{
     }
     function run(url, appName){
         uzd.title='<h3>'+appName+'</h3>'
+        //uzd.zm.resetApp=true
+        //uzd.zm.setCfg=true
         uzd.zm.download(url)
     }
 }

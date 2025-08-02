@@ -59,8 +59,6 @@ Rectangle{
                 j.args['folder']=mainPath
                 j.args['dev']=false
                 j.args['dep']=false
-                //unik.log('Seteando '+unikeyCfgPath)
-                //unik.log('Seteando JSON: '+JSON.stringify(j, null, 2))
                 unik.setFile(unikeyCfgPath, JSON.stringify(j, null, 2))
                 unik.clearComponentCache()
                 let args=[]
