@@ -3,7 +3,6 @@ import ZipManager 4.0
 
 Rectangle{
     id: r
-    parent: capa101
     color: apps.backgroundColor
     anchors.fill: parent
     property alias zm: zipManager

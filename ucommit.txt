@@ -1,1 +1,1 @@
-Se agrega función escape a uzd
+Se corrige error parent en UniKeyZipDownloader

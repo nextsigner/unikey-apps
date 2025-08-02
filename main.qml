@@ -147,10 +147,9 @@ ApplicationWindow{
         width: parent.width
         visible: true
     }
-
-
     Component.onCompleted: {
         lm.append(lm.add('Zool', 'Aplicación de Astrología desarrollada por Ricardo Martín Pizarro', 'https://github.com/nextsigner/zoolv4'))
+        lm.append(lm.add('UniKey Ejemplo Sqlite', 'Aplicación de ejemplo para utilizar bases de datos SQLITE en UniKey', 'https://github.com/nextsigner/unikey-ejemplo-sqlite'))
     }
     Shortcut{
         sequence: 'Esc'
