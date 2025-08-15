@@ -3,6 +3,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Window 2.0
 import Qt.labs.settings 1.1
 import UniKeyZipDownloader 1.0
+import unik.Unik 1.0
 
 ApplicationWindow{
     id: app
@@ -11,6 +12,7 @@ ApplicationWindow{
     color: 'black'
     title: 'Unikey Apps'
     property int fs: Screen.width*0.02
+    Unik{id: unik}
     Settings{
         id: apps
         fileName: unik.getPath(4)+'/'+(''+presetAppName).toLowerCase()+'_app.cfg'
