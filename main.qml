@@ -12,7 +12,10 @@ ApplicationWindow{
     color: 'black'
     title: 'Unikey Apps'
     property int fs: Screen.width*0.02
-    Unik{id: unik}
+    Unik{
+        id: unik
+        //Component.onCompleted: setEngine(engine)
+    }
     Settings{
         id: apps
         fileName: unik.getPath(4)+'/'+(''+presetAppName).toLowerCase()+'_app.cfg'
