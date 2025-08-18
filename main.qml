@@ -14,7 +14,7 @@ ApplicationWindow{
     property int fs: Screen.width*0.02
     Unik{
         id: unik
-        //Component.onCompleted: setEngine(engine)
+        Component.onCompleted: setEngine(engine)
     }
     Settings{
         id: apps
