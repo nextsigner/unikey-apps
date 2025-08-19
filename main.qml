@@ -3,7 +3,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Window 2.0
 import Qt.labs.settings 1.1
 import UniKeyZipDownloader 1.0
-import unik.Unik 1.0
+import UniKey 1.0
 
 ApplicationWindow{
     id: app
@@ -12,19 +12,16 @@ ApplicationWindow{
     color: 'black'
     title: 'Unikey Apps'
     property int fs: Screen.width*0.02
-    Unik{
-        id: unik
-        Component.onCompleted: setEngine(engine)
-    }
+    UniKey{id: u}
     Settings{
         id: apps
-        fileName: unik.getPath(4)+'/'+(''+presetAppName).toLowerCase()+'_app.cfg'
+        fileName: u.getPath(4)+'/'+(''+presetAppName).toLowerCase()+'_app.cfg'
         property bool dev: false
         property bool dep: true
         property string mainFolder: ''
         property bool runFromGit: false
         property string uGitRep: 'https://github.com/nextsigner/unikey-apps'
-        property string uFolder: unik?unik.getPath(3):''
+        property string uFolder: u.getPath(3)
         property bool enableCheckBoxShowGitRep: false
         property color fontColor: 'white'
         property color backgroundColor: 'black'
@@ -56,7 +53,7 @@ ApplicationWindow{
                         function add(text, des, url){
                             return{
                                 t: text,
-                                u: url,
+                                url: url,
                                 d: des
                             }
                         }
@@ -119,7 +116,7 @@ ApplicationWindow{
                                 let mainPath='"'+folder.replace(/\"/g, '')+'"'
                                 let args=[]
                                 args.push('-folder='+""+mainPath.replace(/\"/g, ''))
-                                unik.restart(args, ""+mainPath.replace(/\"/g, ''))
+                                u.restart(args, ""+mainPath.replace(/\"/g, ''))
                                 app.close()
                             }
                         }
@@ -127,7 +124,7 @@ ApplicationWindow{
                             id: botInstalar
                             text: 'Instalar'
                             anchors.verticalCenter: parent.verticalCenter
-                            onClicked: run(u, t)
+                            onClicked: run(url, t)
                         }
                     }
                 }
@@ -137,10 +134,10 @@ ApplicationWindow{
                 }
             }
             Component.onCompleted: {
-                let m0=u.split('/')
+                let m0=url.split('/')
                 let projectName=m0[m0.length-1]
-                let folderApp=unik.getPath(4)+'/'+projectName+'/'+projectName+'-main'
-                if(unik.folderExist(folderApp)){
+                let folderApp=u.getPath(4)+'/'+projectName+'/'+projectName+'-main'
+                if(u.folderExist(folderApp)){
                     botInstalar.text='Reinstalar'
                     botLaunch.folder=folderApp
                 }
